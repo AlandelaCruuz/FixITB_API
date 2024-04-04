@@ -8,7 +8,7 @@ data class Class(
     val classNum: Int
 )
 
-//tablas
+//tablass
 object Classes : Table(){
     val id = integer("id").autoIncrement()
     val classNum = integer("class_num")
