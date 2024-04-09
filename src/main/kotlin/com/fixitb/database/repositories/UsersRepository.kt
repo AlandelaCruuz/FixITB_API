@@ -22,7 +22,7 @@ class UsersRepository: UserDAO{
     override suspend fun getUsers(): List<User> = dbQuery{
         Users.selectAll().map(::resultRowToUser)
     }
-
+ // Insertar el usuario
     override suspend fun insertUser(email: String, classId: Int, role: String): User? = dbQuery{
         val insertStatement = Users.insert {
             it[Users.email] = email
