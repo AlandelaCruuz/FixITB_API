@@ -14,6 +14,8 @@ object DatabaseFactory {
         val driverClassName = "org.h2.Driver"
         val jdbcURL = "jdbc:postgresql://pg-fixitb-fix-itb.a.aivencloud.com:23836/defaultdb?ssl=require&user=avnadmin&password=AVNS_pGDnqLw3W1JnSBJVupA"
         val database = Database.connect(jdbcURL, driverClassName, user, password)
+
+
     }
 
     suspend fun <T> dbQuery(block: suspend () -> T): T {

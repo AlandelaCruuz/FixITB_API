@@ -1,5 +1,7 @@
 package com.fixitb.database.dao
 
-interface IncidenceDAO {
+import com.fixitb.models.Incidence
 
+interface IncidenceDAO {
+    suspend fun getIncidences(): List<Incidence>
 }

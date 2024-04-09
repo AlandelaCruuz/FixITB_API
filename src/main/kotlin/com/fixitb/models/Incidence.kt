@@ -15,7 +15,7 @@ data class Incidence(
     val status: String,
     val classId: Int,
     val userAssigned: String,
-    val codeMain: Int,
+    val codeMain: String,
     val codeMovistar: Int
 
 )
