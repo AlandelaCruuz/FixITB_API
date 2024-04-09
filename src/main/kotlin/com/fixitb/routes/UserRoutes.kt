@@ -18,18 +18,8 @@ fun Route.usersRouting(){
         }
         post{
             val newUser = call.receive<User>()
-            val existingUser = usersRepository.getUserByEmail(newUser.email)
-            if (existingUser == null){
-                call.respond(HttpStatusCode.Found, "new_user")
-            } else{
-                usersRepository.insertUser(
-                    email = newUser.email,
-                    classId = newUser.classId,
-                    role = newUser.role
-                )
-                call.respondText("Ha iniciat sessió correctament")
-            }
-
+            usersRepository.insertUser(newUser.email, newUser.classId, role = "student")
+            call.respond("Perfectoooo!")
         }
     }
 }

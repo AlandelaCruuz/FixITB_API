@@ -16,13 +16,12 @@ class UsersRepository: UserDAO{
         email = row[Users.email],
         classId = row[Users.classId]
 
-
     )
 
     override suspend fun getUsers(): List<User> = dbQuery{
         Users.selectAll().map(::resultRowToUser)
     }
- // Insertar el usuario
+
     override suspend fun insertUser(email: String, classId: Int, role: String): User? = dbQuery{
         val insertStatement = Users.insert {
             it[Users.email] = email
@@ -34,7 +33,5 @@ class UsersRepository: UserDAO{
 
     }
 
-    override suspend fun getUserByEmail(email: String): User? = dbQuery{
-        Users.select { Users.email eq email }.mapNotNull { resultRowToUser(it) }.singleOrNull()
-    }
+
 }
