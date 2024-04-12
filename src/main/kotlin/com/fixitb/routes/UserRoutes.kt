@@ -18,8 +18,8 @@ fun Route.usersRouting(){
         }
         post{
             val newUser = call.receive<User>()
-            usersRepository.insertUser(newUser.email, newUser.classId, role = "student")
-            call.respond("Perfectoooo!")
+            usersRepository.insertUser(newUser.email, newUser.classId, newUser.role)
+            call.respond(HttpStatusCode.OK,"Perfectoooo!")
         }
     }
 }
