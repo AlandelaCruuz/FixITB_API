@@ -13,7 +13,12 @@ object DatabaseFactory {
         val password = "AVNS_pGDnqLw3W1JnSBJVupA"
         val driverClassName = "org.h2.Driver"
         val jdbcURL = "jdbc:postgresql://pg-fixitb-fix-itb.a.aivencloud.com:23836/defaultdb?ssl=require&user=avnadmin&password=AVNS_pGDnqLw3W1JnSBJVupA"
-        val database = Database.connect(jdbcURL, driverClassName, user, password)
+        try {
+            val database = Database.connect(jdbcURL, driverClassName, user, password)
+            println("Conexión a la base de datos establecida correctamente.")
+        } catch (e: Exception) {
+            println("Error al conectar a la base de datos: ${e.message}")
+        }
 
 
     }
