@@ -13,8 +13,7 @@ class UsersRepository: UserDAO{
     private fun resultRowToUser(row: ResultRow) = User(
         id = row[Users.id],
         role = row[Users.role],
-        email = row[Users.email],
-        classId = row[Users.classId]
+        email = row[Users.email]
 
     )
 
@@ -22,16 +21,13 @@ class UsersRepository: UserDAO{
         Users.selectAll().map(::resultRowToUser)
     }
 
-    override suspend fun insertUser(email: String, classId: Int, role: String): User? = dbQuery{
+    override suspend fun insertUser(email: String, role: String): User? = dbQuery{
         val insertStatement = Users.insert {
             it[Users.email] = email
-            it[Users.classId] = classId
             it[Users.role] = role
-
         }
+
         insertStatement.resultedValues?.singleOrNull()?.let(::resultRowToUser)
-
     }
-
 
 }
