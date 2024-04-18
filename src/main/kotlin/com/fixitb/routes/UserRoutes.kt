@@ -21,5 +21,14 @@ fun Route.usersRouting(){
             usersRepository.insertUser(newUser.email, newUser.role)
             call.respond(HttpStatusCode.OK,newUser)
         }
+        get("{email}"){
+            val email = call.parameters["email"] ?: return@get call.respond(HttpStatusCode.BadRequest, "Missing email parameter")
+            val user = usersRepository.getUserByEmail(email)
+            if (user != null) {
+                call.respond(user)
+            } else {
+                call.respond(HttpStatusCode.NotFound, "User with email $email not found")
+            }
+        }
     }
 }

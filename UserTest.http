@@ -1,2 +1,10 @@
 GET http://127.0.0.1:8080/users
 ###
+POST http://127.0.0.1:8080/users
+Content-Type: application/json
+
+{
+  "id": 60,
+  "role": "admin",
+  "email": "albert1972229djy@gmail.com"
+}

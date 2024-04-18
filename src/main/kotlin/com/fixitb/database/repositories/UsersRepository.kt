@@ -21,13 +21,21 @@ class UsersRepository: UserDAO{
         Users.selectAll().map(::resultRowToUser)
     }
 
-    override suspend fun insertUser(email: String, role: String): User? = dbQuery{
-        val insertStatement = Users.insert {
-            it[Users.email] = email
-            it[Users.role] = role
-        }
+    override suspend fun insertUser(email: String, role: String): User? = dbQuery {
 
-        insertStatement.resultedValues?.singleOrNull()?.let(::resultRowToUser)
+        val existingUser = Users.select { Users.email eq email }.singleOrNull()
+        if (existingUser == null) {
+            val insertStatement = Users.insert {
+                it[Users.email] = email
+                it[Users.role] = role
+            }
+            insertStatement.resultedValues?.singleOrNull()?.let(::resultRowToUser)
+        } else {
+            resultRowToUser(existingUser)
+        }
+    }
+    override suspend fun getUserByEmail(email: String): User? = dbQuery {
+        Users.select { Users.email eq email }.singleOrNull()?.let(::resultRowToUser)
     }
 
 }

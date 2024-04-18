@@ -23,8 +23,6 @@ fun Route.incidencesRouting(){
         post{
             val newIncidence = call.receive<Incidence>()
             incidencesRepository.insertIncidence(newIncidence.device, newIncidence.image, newIncidence.description, newIncidence.openDate, newIncidence.closeDate, newIncidence.status, newIncidence.classId, newIncidence.userAssigned, newIncidence.codeMain, newIncidence.codeMovistar)
-
-
             call.respond(HttpStatusCode.OK,newIncidence)
         }
     }
