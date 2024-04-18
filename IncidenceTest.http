@@ -1,0 +1,21 @@
+GET http://127.0.0.1:8080/incidences
+###
+POST http://127.0.0.1:8080/incidences
+Content-Type: application/json
+
+{
+  "id": 40,
+  "device": "Ordenador",
+  "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdYpkhbP8DFyy0ON8mfu9CP9xrveZKuLP2HSr6eOUPww&s",
+  "description": "No enciende",
+  "openDate": "2024-04-15",
+  "closeDate": "2024-04-18",
+  "status": "Abierto",
+  "classId": 1,
+  "userAssigned": "Juan",
+  "codeMain": "74385y723hsj",
+  "codeMovistar": 54354254
+}
+
+
+
