@@ -3,7 +3,9 @@ package com.fixitb.routes
 import com.fixitb.database.repositories.UsersRepository
 import com.fixitb.models.User
 import io.ktor.http.*
+import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
+import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -13,13 +15,18 @@ val usersRepository = UsersRepository()
 fun Route.usersRouting(){
     route("/users"){
         get {
+
             val users = usersRepository.getUsers()
             call.respond(users)
         }
         post{
             val newUser = call.receive<User>()
             usersRepository.insertUser(newUser.email, newUser.role)
-            call.respond(HttpStatusCode.OK,newUser)
+            if (newUser.email.contains("@itb.cat")) {
+                call.respond(HttpStatusCode.OK, newUser)
+            }
+            else
+                call.respond(HttpStatusCode.BadRequest, "Only ITB emails allowed")
         }
         get("{email}"){
             val email = call.parameters["email"] ?: return@get call.respond(HttpStatusCode.BadRequest, "Missing email parameter")
