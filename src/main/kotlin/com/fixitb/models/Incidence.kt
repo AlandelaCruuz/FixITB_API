@@ -16,10 +16,12 @@ data class Incidence(
     val openDate: String,
     val closeDate: String,
     val status: String,
-    val classId: Int,
+    val classNum: Int,
     val userAssigned: String,
     val codeMain: String,
-    val codeMovistar: Int
+    val codeMovistar: Int,
+    val userId: Int,
+    val title: String
 )
 
 
@@ -31,10 +33,12 @@ object Incidences : Table(){
     val openDate = varchar("open_date", 255)
     val closeDate = varchar("close_date", 255)
     val status = varchar("status", 255)
-    val classId = integer("class_id")
+    val classNum = integer("class_num")
     val userAssigned = varchar("user_assigned", 255)
     val codeMain = varchar("code_main", 255)
     val codeMovistar = integer("code_movistar")
+    val userId = integer("user_id")
+    val title = varchar("title", 255)
 
     override val primaryKey = PrimaryKey(id)
 

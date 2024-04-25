@@ -3,8 +3,20 @@ GET http://127.0.0.1:8080/users
 POST http://127.0.0.1:8080/users
 Content-Type: application/json
 
+
 {
   "id": 60,
   "role": "admin",
   "email": "albert1972229djy@gmail.com"
 }
+###
+GET http://127.0.0.1:8080/users/albert1979djy@gmail.com
+###
+POST http://127.0.0.1:8080/users
+Content-Type: application/json
+
+{
+  "idTokenn": "eyJhbGciOiJSUzI1NiIsImtpZCI6ImUxYjkzYzY0MDE0NGI4NGJkMDViZjI5NmQ2NzI2MmI2YmM2MWE0ODciLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiIxMTU4NjU0MzgzNzEtYnZvMDhkMjNpZ3AyMm9zbHZzaTlycGVxaXRtOXVhaGYuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiIxMTU4NjU0MzgzNzEtY2Y4Mm51dTU3NmJybDMwb3FuaDRxbWsxZDZnb3A5NWYuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMTAwNTU2MDkwNTQ2Mzc3MzE2MjciLCJoZCI6Iml0Yi5jYXQiLCJlbWFpbCI6ImFsYmVydC5kYXJjaGlldi43ZTZAaXRiLmNhdCIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJuYW1lIjoiYWxiZXJ0IFtpdGJdIGRhcmNoaWV2IiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0k2SWZHMllVSlpEeHhScjJGREFmY19NdjhwNnIxMVFlS2syYWhIcWJJdExfWGxLR009czk2LWMiLCJnaXZlbl9uYW1lIjoiYWxiZXJ0IFtpdGJdIiwiZmFtaWx5X25hbWUiOiJkYXJjaGlldiIsImlhdCI6MTcxNDA3NDk4NiwiZXhwIjoxNzE0MDc4NTg2fQ.GrPEumDGLLxgLupcifbobA67pdiHS_XFP9OuC-p85p1AEdR5fC_o_n--DMxzTxRJtZyMF-4qjJmAlhONHBjhRjl_-p7cGme7nGjyiz-B67tlaQYXDYgN9vikEp7pCJLa6JG_ifTd5XlTxti_x1OlRXisqmm_hyJRva1nKN6GLIJHh6zUV-OU_JwBQFEJmoaD5Bu_cs61wIwthcz7eeukRaxn7NSmyFu1BHrp2ohlRrIUzEK6Xrg7hAKvY5SPoSy7fIJiW_RAo9k0QaeUTLYMyPhkaV50you3W-H4X5BRddoNL37KwsyWtFepf5vMj3pMQS24rN6qFXI78VEoZ6mS9Q"
+}
+
+
