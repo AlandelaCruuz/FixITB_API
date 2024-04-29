@@ -29,9 +29,7 @@ fun Application.module() {
         expiresIn = 365L * 1000L * 60L * 60L * 24L,
         secret = secret
     )
-
     configureSerialization()
     configureSecurity(tokenConfig)
     configureRouting(tokenService, tokenConfig)
-
 }

@@ -4,18 +4,14 @@ import com.fixitb.database.DatabaseFactory.dbQuery
 import com.fixitb.database.dao.UserDAO
 import com.fixitb.models.User
 import com.fixitb.models.Users
-import com.fixitb.security.token.TokenConfig
-import com.fixitb.security.token.TokenService
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport
-import org.jetbrains.exposed.sql.ResultRow
-import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.select
-import org.jetbrains.exposed.sql.selectAll
 import com.google.api.client.json.JsonFactory
 import com.google.api.client.json.jackson2.JacksonFactory
-import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthException
+import org.jetbrains.exposed.sql.*
 import java.util.*
 
 
@@ -34,11 +30,17 @@ class UsersRepository : UserDAO {
         id = row[Users.id],
         role = row[Users.role],
         email = row[Users.email]
-
     )
 
     override suspend fun getUsers(): List<User> = dbQuery {
         Users.selectAll().map(::resultRowToUser)
+    }
+
+    override suspend fun assignRoleByUserId(userId: Int, newRole: String): User? = dbQuery {
+        Users.update ({ Users.id eq userId }){
+            it[Users.role] = role
+        }
+        Users.select{ Users.id eq userId }.mapNotNull(::resultRowToUser).singleOrNull()
     }
 
     override suspend fun insertUser(paramToken: String): User? = dbQuery {
@@ -47,12 +49,9 @@ class UsersRepository : UserDAO {
 
         print(idToken)
         if (idToken != null) {
-            val payload: Payload = idToken.payload
-            // Obtener el email verificado desde el payload
+            val payload: GoogleIdToken.Payload = idToken.payload
             val verifiedEmail: String? = payload.email
             print("Email verificado: $verifiedEmail")
-            // Comparar el email verificado con el email proporcionado
-            // Insertar el usuario en la base de datos
             val existingUser = Users.select { Users.email eq payload.email }.singleOrNull()
             if (existingUser == null) {
                 val insertStatement = Users.insert {
@@ -63,9 +62,7 @@ class UsersRepository : UserDAO {
             } else {
                 resultRowToUser(existingUser)
             }
-
         } else {
-            // El token es invÃ¡lido
             null
         }
     }
@@ -74,4 +71,37 @@ class UsersRepository : UserDAO {
         Users.select { Users.email eq email }.singleOrNull()?.let(::resultRowToUser)
     }
 
+
 }
+
+/**
+ * override suspend fun insertUser(paramToken: String): User? = dbQuery {
+ *         try {
+ *             val decodedToken = FirebaseAuth.getInstance().verifyIdToken(paramToken)
+ *             print(decodedToken)
+ *             print(decodedToken.uid)
+ *
+ *             print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa")
+ *             val uid = decodedToken.uid
+ *             val email = decodedToken.email
+ *             println("Email verificado: $email")
+ *
+ *             // Verificar si el usuario ya existe en la base de datos
+ *             val existingUser = Users.select { Users.email eq email }.singleOrNull()
+ *             if (existingUser == null) {
+ *                 // Si el usuario no existe, insertarlo en la base de datos
+ *                 val insertStatement = Users.insert {
+ *                     it[Users.email] = email
+ *                     it[Users.role] = "Student"
+ *                 }
+ *                 insertStatement.resultedValues?.singleOrNull()?.let(::resultRowToUser)
+ *             } else {
+ *                 // Si el usuario ya existe, devolverlo
+ *                 resultRowToUser(existingUser)
+ *             }
+ *         } catch (e: FirebaseAuthException) {
+ *             println("Error al verificar el token: ${e.message}")
+ *             null
+ *         }
+ *     }
+ */

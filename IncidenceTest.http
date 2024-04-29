@@ -41,4 +41,7 @@ Content-Type: application/json
   "title": "Ordenador roto update"
 }
 
+###
+DELETE http://127.0.0.1:8080/incidences/delete/2
+
 

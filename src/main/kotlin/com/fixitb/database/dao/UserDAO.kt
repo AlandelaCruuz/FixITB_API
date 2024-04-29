@@ -7,4 +7,6 @@ interface UserDAO {
     suspend fun getUsers(): List<User>
     suspend fun insertUser(paramToken: String): User?
     suspend fun getUserByEmail(email: String): User?
+    suspend fun assignRoleByUserId(userId: Int, newRole: String): User?
+
 }

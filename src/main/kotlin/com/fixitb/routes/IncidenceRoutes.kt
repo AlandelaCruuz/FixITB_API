@@ -27,15 +27,15 @@ fun Route.incidencesRouting() {
                 val newIncidence = call.receive<Incidence>()
                 incidencesRepository.insertIncidence(
                     newIncidence.device,
-                    newIncidence.image,
+                    newIncidence.image?:"",
                     newIncidence.description,
                     newIncidence.openDate,
-                    newIncidence.closeDate,
+                    newIncidence.closeDate?:"",
                     newIncidence.status,
                     newIncidence.classNum,
-                    newIncidence.userAssigned,
-                    newIncidence.codeMain,
-                    newIncidence.codeMovistar,
+                    newIncidence.userAssigned?:"",
+                    newIncidence.codeMain?:"",
+                    newIncidence.codeMovistar?:0,
                     newIncidence.userId,
                     newIncidence.title
                 )
@@ -62,14 +62,15 @@ fun Route.incidencesRouting() {
                 val updated = incidencesRepository.updateIncidenceById(
                     incidenceId,
                     incidence.device,
-                    incidence.image,
+                    incidence.image?:"",
                     incidence.description,
                     incidence.status,
                     incidence.classNum,
-                    incidence.userAssigned,
-                    incidence.codeMain,
-                    incidence.codeMovistar,
-                    incidence.title
+                    incidence.userAssigned?:"",
+                    incidence.codeMain?:"",
+                    incidence.codeMovistar?:0,
+                    incidence.title,
+                    incidence.closeDate?:""
 
                 )
 
@@ -79,8 +80,20 @@ fun Route.incidencesRouting() {
                     call.respond(HttpStatusCode.InternalServerError, "Failed to update incidence")
                 }
             }
+            delete("/delete/{incidenceId}"){
+                val incidenceId = call.parameters["incidenceId"]?.toIntOrNull()
+                if (incidenceId == null) {
+                    call.respond(HttpStatusCode.BadRequest, "Invalid incidence ID")
+                    return@delete
+                }
+                val deleted = incidencesRepository.deleteIncidenceById(incidenceId)
+                if (deleted) {
+                    call.respond(HttpStatusCode.OK, "Incidence deleted successfully")
+                } else {
+                    call.respond(HttpStatusCode.InternalServerError, "Failed to delete incidence")
+                }
+            }
         }
     }
-
 }
 

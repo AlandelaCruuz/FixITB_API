@@ -4,14 +4,8 @@ import com.fixitb.database.DatabaseFactory.dbQuery
 import com.fixitb.database.dao.IncidenceDAO
 import com.fixitb.models.Incidence
 import com.fixitb.models.Incidences
-import com.fixitb.models.Incidences.autoIncrement
-import com.fixitb.models.User
-import com.fixitb.models.Users
 import org.jetbrains.exposed.sql.*
-import org.jetbrains.exposed.sql.javatime.date
-import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.LocalDateTime
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import java.util.*
 
 class IncidencesRepository: IncidenceDAO {
@@ -68,7 +62,8 @@ class IncidencesRepository: IncidenceDAO {
         newUserAssigned: String,
         newCodeMain: String,
         newCodeMovistar: Int,
-        newTitle: String
+        newTitle: String,
+        newcloseDate: String
     ): Boolean = dbQuery {
         val updateStatement = Incidences.update({Incidences.id eq incidenceId}){
             it[Incidences.device] = newDevice
@@ -80,11 +75,15 @@ class IncidencesRepository: IncidenceDAO {
             it[Incidences.codeMain] = newCodeMain
             it[Incidences.codeMovistar] = newCodeMovistar
             it[Incidences.title] = newTitle
+            it[Incidences.closeDate] = newcloseDate
         }
         updateStatement > 0
     }
 
-
+    override suspend fun deleteIncidenceById(incidenceId: Int): Boolean = dbQuery {
+        val deleteStatement = Incidences.deleteWhere { Incidences.id eq incidenceId }
+        deleteStatement > 0
+    }
 }
 
 
