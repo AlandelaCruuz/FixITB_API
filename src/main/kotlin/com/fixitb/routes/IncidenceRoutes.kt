@@ -3,8 +3,10 @@ package com.fixitb.routes
 import com.fixitb.database.repositories.IncidencesRepository
 import com.fixitb.models.Incidence
 import com.fixitb.models.User
+import com.fixitb.saveImageToImageKit
 import com.fixitb.security.token.TokenConfig
 import com.fixitb.security.token.TokenService
+import io.imagekit.sdk.ImageKit
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
@@ -12,10 +14,11 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import java.text.SimpleDateFormat
+
 import java.util.Date
 
-
 val incidencesRepository = IncidencesRepository()
+
 fun Route.incidencesRouting() {
     authenticate {
         route("/incidences") {
@@ -25,9 +28,12 @@ fun Route.incidencesRouting() {
             }
             post {
                 val newIncidence = call.receive<Incidence>()
+                val imageUrl = newIncidence.image?.let {
+                    saveImageToImageKit(it, "Incidencia_.jpg")
+                }
                 incidencesRepository.insertIncidence(
                     newIncidence.device,
-                    newIncidence.image?:"",
+                    imageUrl?:"",
                     newIncidence.description,
                     newIncidence.openDate,
                     newIncidence.closeDate?:"",
@@ -93,7 +99,9 @@ fun Route.incidencesRouting() {
                     call.respond(HttpStatusCode.InternalServerError, "Failed to delete incidence")
                 }
             }
+
         }
+
     }
 }
 
