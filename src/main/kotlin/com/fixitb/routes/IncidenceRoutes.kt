@@ -55,6 +55,19 @@ fun Route.incidencesRouting() {
                 val incidencesByUserId = incidencesRepository.getIncidencesByUserId(id!!.toInt())
                 call.respond(incidencesByUserId)
             }
+            get("incidence/{incidenceId}") {
+                val incidenceId = call.parameters["incidenceId"]?.toIntOrNull()
+                if (incidenceId == null) {
+                    call.respond(HttpStatusCode.BadRequest, "Invalid incidence ID")
+                    return@get
+                }
+                val incidence = incidencesRepository.getIncidenceById(incidenceId)
+                if (incidence == null) {
+                    call.respond(HttpStatusCode.NotFound, "Incidence not found")
+                } else {
+                    call.respond(HttpStatusCode.OK, incidence)
+                }
+            }
 
             put("{incidenceId}") {
                 val incidenceId = call.parameters["incidenceId"]?.toIntOrNull()
@@ -77,7 +90,6 @@ fun Route.incidencesRouting() {
                     incidence.codeMovistar?:0,
                     incidence.title,
                     incidence.closeDate?:""
-
                 )
 
                 if (updated) {
@@ -86,6 +98,8 @@ fun Route.incidencesRouting() {
                     call.respond(HttpStatusCode.InternalServerError, "Failed to update incidence")
                 }
             }
+
+
             delete("/delete/{incidenceId}"){
                 val incidenceId = call.parameters["incidenceId"]?.toIntOrNull()
                 if (incidenceId == null) {

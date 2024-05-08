@@ -2,6 +2,7 @@ package com.fixitb.database.repositories
 
 import com.fixitb.database.DatabaseFactory.dbQuery
 import com.fixitb.database.dao.UserDAO
+import com.fixitb.models.Incidences
 import com.fixitb.models.User
 import com.fixitb.models.Users
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken
@@ -10,6 +11,8 @@ import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport
 import com.google.api.client.json.JsonFactory
 import com.google.api.client.json.jackson2.JacksonFactory
 import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.transactions.transaction
 import java.util.*
 
 
@@ -69,6 +72,17 @@ class UsersRepository : UserDAO {
         Users.select { Users.email eq email }.singleOrNull()?.let(::resultRowToUser)
     }
 
+
+
+    override suspend fun deleteUserById(userId: Int): Boolean = dbQuery{
+        var success = false
+        transaction {
+            Incidences.deleteWhere { Incidences.userId eq userId }
+            val deleteCount = Users.deleteWhere { Users.id eq userId }
+            success = deleteCount > 0
+        }
+        success
+    }
 
 }
 

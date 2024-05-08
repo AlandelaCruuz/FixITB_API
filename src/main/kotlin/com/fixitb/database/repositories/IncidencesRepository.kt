@@ -84,6 +84,21 @@ class IncidencesRepository: IncidenceDAO {
         val deleteStatement = Incidences.deleteWhere { Incidences.id eq incidenceId }
         deleteStatement > 0
     }
+
+    override suspend fun getIncidenceById(incidenceId: Int): Incidence {
+        return dbQuery {
+            Incidences.select { Incidences.id eq incidenceId }
+                .mapNotNull(::resultRowToIncidence)
+                .singleOrNull() ?: throw NoSuchElementException("No se encontró ninguna incidencia con el ID: $incidenceId")
+        }
+    }
+
+
+
+
+
+
+
 }
 
 

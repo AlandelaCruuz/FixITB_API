@@ -1,6 +1,7 @@
 package com.fixitb.routes
 
 import com.fixitb.database.repositories.UsersRepository
+import com.fixitb.models.LoginResponse
 import com.fixitb.models.Tokn
 import com.fixitb.models.User
 import com.fixitb.security.token.TokenClaim
@@ -25,7 +26,8 @@ fun Route.usersRouting(tokenService: TokenService, tokenConfig: TokenConfig){
         val verified = usersRepository.insertUser(newUser.idTokenn)
         if (verified != null) {
             val token = tokenService.generate(tokenConfig, TokenClaim("userEmail", "vdsav"))
-            call.respond(HttpStatusCode.OK, token.toString())
+            val response = LoginResponse(token.toString(), verified)
+            call.respond(HttpStatusCode.OK, response)
         }
         else {
             call.respond(HttpStatusCode.NonAuthoritativeInformation, "Only ITB emails allowed")
@@ -75,6 +77,19 @@ fun Route.usersRouting(tokenService: TokenService, tokenConfig: TokenConfig){
                     call.respond(user)
                 } else {
                     call.respond(HttpStatusCode.NotFound, "User with email $email not found")
+                }
+            }
+            delete("/delete/{userId}"){
+                val userId = call.parameters["userId"]?.toIntOrNull()
+                if (userId == null) {
+                    call.respond(HttpStatusCode.BadRequest, "Invalid user ID")
+                    return@delete
+                }
+                val deleted = usersRepository.deleteUserById(userId)
+                if (deleted) {
+                    call.respond(HttpStatusCode.OK, "User deleted successfully")
+                } else {
+                    call.respond(HttpStatusCode.InternalServerError, "Failed to delete user")
                 }
             }
         }

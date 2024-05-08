@@ -8,5 +8,6 @@ interface UserDAO {
     suspend fun insertUser(paramToken: String): User?
     suspend fun getUserByEmail(email: String): User?
     suspend fun assignRoleByUserId(userId: Int, newRole: String): User?
+    suspend fun deleteUserById(userId: Int): Boolean
 
 }

@@ -9,7 +9,6 @@ data class User(
     val id: Int,
     val role: String,
     val email: String
-
 )
 
 

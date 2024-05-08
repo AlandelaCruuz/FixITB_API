@@ -10,4 +10,6 @@ interface IncidenceDAO {
     suspend fun getIncidencesByUserId(userId: Int): List<Incidence>
     suspend fun updateIncidenceById(incidenceId: Int, device: String, image: String, description: String, status: String, classNum: Int, userAssigned: String, codeMain: String, codeMovistar: Int, title: String, closeDate: String): Boolean
     suspend fun deleteIncidenceById(incidenceId: Int): Boolean
+    suspend fun getIncidenceById(incidenceId: Int): Incidence
+
 }
