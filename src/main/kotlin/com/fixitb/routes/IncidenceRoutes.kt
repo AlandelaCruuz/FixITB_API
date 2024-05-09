@@ -27,10 +27,17 @@ fun Route.incidencesRouting() {
                 call.respond(incidences)
             }
             post {
+                var imageUrl = ""
                 val newIncidence = call.receive<Incidence>()
-                val imageUrl = newIncidence.image?.let {
-                    saveImageToImageKit(it, "Incidencia_.jpg")
+                if (newIncidence.image != null && newIncidence.image != "") {
+                    imageUrl = newIncidence.image.let {
+                        saveImageToImageKit(it, "Incidencia_.jpg")
+                    }.toString()
                 }
+                else {
+                    imageUrl = ""
+                }
+
                 incidencesRepository.insertIncidence(
                     newIncidence.device,
                     imageUrl?:"",

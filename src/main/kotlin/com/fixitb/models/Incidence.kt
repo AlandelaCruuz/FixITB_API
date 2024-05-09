@@ -11,7 +11,7 @@ import org.jetbrains.exposed.sql.javatime.date
 data class Incidence(
     val id: Int,
     val device: String,
-    val image : String?,
+    val image : String? = null,
     val description: String,
     val openDate: String,
     val closeDate: String?,
