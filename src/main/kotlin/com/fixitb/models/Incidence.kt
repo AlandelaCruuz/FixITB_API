@@ -14,7 +14,7 @@ data class Incidence(
     val image : String? = null,
     val description: String,
     val openDate: String,
-    val closeDate: String?,
+    val closeDate: String? = null,
     val status: String,
     val classNum: Int,
     val userAssigned: String?,
