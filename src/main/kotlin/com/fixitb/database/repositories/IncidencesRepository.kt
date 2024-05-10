@@ -93,6 +93,10 @@ class IncidencesRepository: IncidenceDAO {
         }
     }
 
+    override suspend fun getIncidencesForUserAssigned(email: String): List<Incidence> = dbQuery{
+        Incidences.select {Incidences.userAssigned eq email}.map(::resultRowToIncidence)
+    }
+
 
 
 

@@ -39,8 +39,9 @@ class UsersRepository : UserDAO {
 
     override suspend fun assignRoleByUserId(userId: Int, newRole: String): User? = dbQuery {
         Users.update ({ Users.id eq userId }){
-            it[Users.role] = role
+            it[Users.role] = newRole
         }
+
         Users.select{ Users.id eq userId }.mapNotNull(::resultRowToUser).singleOrNull()
     }
 

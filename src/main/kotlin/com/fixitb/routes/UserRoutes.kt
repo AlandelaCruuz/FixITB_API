@@ -36,27 +36,16 @@ fun Route.usersRouting(tokenService: TokenService, tokenConfig: TokenConfig){
     authenticate {
         route("/users"){
             get {
-                val principal = call.principal<JWTPrincipal>()
-                if (principal == null) {
-                    call.respond(HttpStatusCode.Unauthorized, "Token no proporcionado")
-                    return@get
-                }
+
                 val users = usersRepository.getUsers()
                 call.respond(users)
             }
-            put("/{userId}/role/{newRole]") {
-                val principal = call.principal<JWTPrincipal>()
-                if (principal == null) {
-                    call.respond(HttpStatusCode.Unauthorized, "Token no proporcionado")
-                    return@put
-                }
+            put("/{userId}/role/{newRole}") {
                 val userId = call.parameters["userId"]?.toIntOrNull()
+                println(userId)
                 val newRole = call.parameters["newRole"]?.toString()
-                if (userId == null || newRole == null) {
-                    call.respondText("Invalid parameters", status = HttpStatusCode.BadRequest)
-                    return@put
-                }
-                val updatedRole = usersRepository.assignRoleByUserId(userId, newRole)
+                println(newRole)
+                val updatedRole = usersRepository.assignRoleByUserId(userId!!, newRole!!)
 
                 if (updatedRole != null) {
                     call.respond(updatedRole)

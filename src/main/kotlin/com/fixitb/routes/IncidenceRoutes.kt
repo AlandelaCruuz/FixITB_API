@@ -121,6 +121,15 @@ fun Route.incidencesRouting() {
                 }
             }
 
+            get("/tecnic/{email}"){
+                if (call.parameters["email"].isNullOrBlank()) {
+                    return@get call.respondText("Missing email", status = HttpStatusCode.BadRequest)
+                }
+                val email = call.parameters["email"]
+                val incidencesForUserAssigned = incidencesRepository.getIncidencesForUserAssigned(email!!.toString())
+                call.respond(incidencesForUserAssigned)
+            }
+
         }
 
     }
