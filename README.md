@@ -1,4 +1,22 @@
-# Fix_ITB API
+# FixItb - BackEnd
+
+FixItb es un proyecto desarrollado para el Institut Tecnològic de Barcelona que se encarga de gestionar las incidencias del centro. Los usuarios pueden reportar una incidencia, la cual será revisada y atendida por un técnico que se encargará de resolverla.
+
+## Autores
+- [Roman Aziz](https://github.com/muhammad-roman)
+- [Albert Darchiev](https://github.com/AlbertDarchiev)
+- [Alan Delacruz](https://github.com/AlandelaCruuz)
+
+## Proyecto FrontEnd
+- [FixItb - FrontEnd](https://github.com/AlbertDarchiev/FixITB_Frontend)
+
+
+## Technologies
+- Base de datos: Postgres
+- Framework Backend: Ktor
+- Almacenamiento de imágenes: ImageKit
+- Framework Frontend: Jetpack Compose (utilizado en Android Studio)
+
 
 
 ## Endpoints de Usuarios
